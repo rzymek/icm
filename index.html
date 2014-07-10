@@ -23,16 +23,9 @@
     	map: map    	
     });
     google.maps.event.addListener(map, "click", function(event) {
-    		marker.setPosition(event.latLng);
+	    event.stop();
+  		marker.setPosition(event.latLng);
     });
-    /*
-            var type = document.getElementById("t84").checked ? "/um" : "";
-        console.log(event.latLng.lat());
-			  var url = "http://new.meteo.pl"+type+"/php/mgram_search.php?NALL="+event.latLng.lat()+"&EALL="+event.latLng.lng();
-        //url="/fetch?coord="+event.latLng+"&type="+type;
-        window.open(url,"meteo"+type); 
-
-    */
   }
  
   function codeAddress() {
