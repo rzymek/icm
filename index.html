@@ -5,24 +5,34 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
 <title>Google Maps Meteo</title> 
 <link href="http://code.google.com/apis/maps/documentation/javascript/examples/standard.css" rel="stylesheet" type="text/css" /> 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
 <script type="text/javascript"> 
   var geocoder;
   var map;
+  var marker;
   function initialize() {
     geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(52.2296, 21.0123);
-    var myOptions = {
+    map = new google.maps.Map(document.getElementById("map_canvas"), {
       zoom: 8,
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    google.maps.event.addListener(map, "click", function(event) {
-        type = document.getElementById("t84").checked ? "84" : "48";
-        url="/fetch?coord="+event.latLng+"&type="+type;
-        window.open(url,"meteo"); 
     });
+    marker = new google.maps.Marker({
+    	position: latlng,
+    	map: map    	
+    });
+    google.maps.event.addListener(map, "click", function(event) {
+    		marker.setPosition(event.latLng);
+    });
+    /*
+            var type = document.getElementById("t84").checked ? "/um" : "";
+        console.log(event.latLng.lat());
+			  var url = "http://new.meteo.pl"+type+"/php/mgram_search.php?NALL="+event.latLng.lat()+"&EALL="+event.latLng.lng();
+        //url="/fetch?coord="+event.latLng+"&type="+type;
+        window.open(url,"meteo"+type); 
+
+    */
   }
  
   function codeAddress() {
@@ -39,15 +49,30 @@
       }
     });
   }
+  
+  function openIcm(type) {
+  	type = type || "";
+    var latLng = marker.getPosition();
+	  var url = "http://new.meteo.pl"+type+"/php/mgram_search.php?NALL="+latLng.lat()+"&EALL="+latLng.lng();
+    //url="/fetch?coord="+event.latLng+"&type="+type;
+    window.open(url,"meteo"+type);   
+  }
+  
 </script> 
+<style type="text/css">
+button {
+	width: 50px;
+	height: 50px;
+}
+</style>
 </head> 
 <body onload="initialize()"> 
   <div>
     <input id="address" type="text" size="100" value="Warszawa, Poland" 
     	onkeydown="if (event.keyCode == 13) codeAddress()">
-    <input type="radio" id="t48" name="type" value="48" checked="checked"/><label for="t48">48</label> 
-    <input type="radio" id="t84" name="type" value="84"/><label for="t84">84</label> 
     <input type="button" value="Search" onclick="codeAddress()"> 
+    <button onclick="openIcm()">48</button>
+    <button onclick="openIcm('/um')">84</button>
   </div> 
 <div id="map_canvas" style="height:90%"></div> 
 </body> 
