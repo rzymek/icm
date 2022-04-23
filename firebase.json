@@ -7,6 +7,12 @@
   },
   "hosting": {
     "public": "public",
+    "rewrites": [
+      {
+        "source": "/helloWorld",
+        "function": "helloWorld"
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
