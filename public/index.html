@@ -25,12 +25,32 @@
       height: 100%;
       width: 100vw;
     }
+
+    a.button {
+      width: 64px;
+      height: 64px;
+      color: #FFFFFF;
+      background-color: #4eb5f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 1em;
+      text-decoration: none;
+    }
+
+    a.button:hover {
+      background-color: #4095c6;
+    }
+
+    .popup {
+      display: flex;
+      gap: 1em;
+    }
   </style>
 </head>
 
 <body>
   <div id='map'></div>
-
   <script>
     const map = L.map('map').setView([52.2296, 21.0123], 7);
 
@@ -39,8 +59,25 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    map.on('locationfound', e => map.flyTo(e.latlng, 10));
+    const popup = L.popup({ closeButton: false });
 
+    map.on('locationfound', e => map.flyTo(e.latlng, 10));
+    map.on('click', async e => {
+      popup
+        .setLatLng(e.latlng)
+        .setContent(`...`)
+        .openOn(map);
+      const links = await fetch(`/links?lat=${e.latlng.lat}&lon=${e.latlng.lon}`).then(resp => resp.json());
+      popup
+        .setLatLng(e.latlng)
+        .setContent(`
+          <div class="popup">
+            ${Object.entries(links)
+            .map(([name, link]) => `<a href="${link}" class="button" target="_blank">${name}</av>`)
+            .join('')}
+          </div>`)
+        .openOn(map);
+    });
     map.locate({ setView: true, maxZoom: 16 });
   </script>
 </body>

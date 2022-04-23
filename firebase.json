@@ -9,8 +9,8 @@
     "public": "public",
     "rewrites": [
       {
-        "source": "/helloWorld",
-        "function": "helloWorld"
+        "source": "/links",
+        "function": "links"
       }
     ],
     "ignore": [
