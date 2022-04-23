@@ -67,7 +67,7 @@
         .setLatLng(e.latlng)
         .setContent(`...`)
         .openOn(map);
-      const links = await fetch(`/links?lat=${e.latlng.lat}&lon=${e.latlng.lon}`).then(resp => resp.json());
+      const links = await fetch(`/links?lat=${e.latlng.lat}&lng=${e.latlng.lng}`).then(resp => resp.json());
       popup
         .setLatLng(e.latlng)
         .setContent(`
