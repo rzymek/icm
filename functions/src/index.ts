@@ -16,7 +16,7 @@ async function icm(prefix: '' | '/um', { lat, lng }: LatLng) {
         console.log(url);
         const resp = await axios.get(url, { maxRedirects: 0, validateStatus: null });
         const [row, col] = resp.headers.location.match(/(row|col)=([0-9]+)/g)?.map(match => match.split(/=/)[1]) ?? []
-        if(row === undefined || col == undefined) {
+        if (row === undefined || col == undefined) {
             throw new Error(`pattern not found in location header: ${resp.headers.location}`);
         }
         return `http://new.meteo.pl${prefix}/metco/mgram_pict.php?ntype=0u&row=${row}&col=${col}&lang=pl`
@@ -54,7 +54,7 @@ async function run(coord: LatLng, response: functions.Response<any>) {
     response.send(JSON.stringify(results));
 }
 
-export const links = functions.https.onRequest((request, response) => {
+export const links = functions.region('europe-west3').https.onRequest((request, response) => {
     const { lat, lng } = request.query;
 
     run({ lat: lat as string, lng: lng as string }, response);
