@@ -54,8 +54,8 @@ async function run(coord: LatLng, response: functions.Response<any>) {
     response.send(JSON.stringify(results));
 }
 
-export const links = functions.region('europe-west3').https.onRequest((request, response) => {
-    const { lat, lng } = request.query;
+export const links = functions.https.onRequest((request, response) => {
+        const { lat, lng } = request.query;
 
-    run({ lat: lat as string, lng: lng as string }, response);
-});
+        run({ lat: lat as string, lng: lng as string }, response);
+    });
