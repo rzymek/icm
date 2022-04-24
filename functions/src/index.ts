@@ -1,4 +1,3 @@
-
 import * as functions from "firebase-functions";
 import axios from "axios";
 
@@ -31,7 +30,8 @@ async function blueMeteo(type: 'tydzie%C5%84' | '14-dniowa', c: LatLng) {
         const url = `https://www.meteoblue.com/pl/pogoda/${type}/${c.lat}N${c.lng}E`
         console.log(url);
         const resp = await axios.get(url);
-        const [link] = resp.data?.match('//my.meteoblue.com/visimage/[^"]*');
+        const [link] = resp.data?.match('//my.meteoblue.com/visimage/meteogram_[^"\']*');
+        console.log(link);
         return `https://${link}`;
     } catch (e: any) {
         return errorLink(e);
