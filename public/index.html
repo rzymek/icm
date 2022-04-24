@@ -63,22 +63,26 @@
 
     const popup = L.popup({ closeButton: false });
 
+    function show(e, s) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent(s)
+        .openOn(map);
+    }
     map.on('locationfound', e => map.flyTo(e.latlng, 10));
     map.on('click', async e => {
-      popup
-        .setLatLng(e.latlng)
-        .setContent(`...`)
-        .openOn(map);
-      const links = await fetch(`/links?lat=${e.latlng.lat}&lng=${e.latlng.lng}`).then(resp => resp.json());
-      popup
-        .setLatLng(e.latlng)
-        .setContent(`
+      show(e, '...');
+      try {
+        const links = await fetch(`/links?lat=${e.latlng.lat}&lng=${e.latlng.lng}`).then(resp => resp.json());
+        show(e, `
           <div class="popup">
             ${Object.entries(links)
             .map(([name, link]) => `<a href="${link}" class="button" target="_blank">${name}</av>`)
             .join('')}
           </div>`)
-        .openOn(map);
+      } catch (err) {
+        show(e, err.toString());
+      }
     });
     map.locate({ setView: true, maxZoom: 16 });
   </script>
