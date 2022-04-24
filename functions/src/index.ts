@@ -32,7 +32,7 @@ async function blueMeteo(type: 'tydzie%C5%84' | '14-dniowa', c: LatLng) {
         const resp = await axios.get(url);
         const [link] = resp.data?.match('//my.meteoblue.com/visimage/meteogram_[^"\']*');
         console.log(link);
-        return `https://${link}`;
+        return `https://${link.replace(/&amp;/g, '&')}`;
     } catch (e: any) {
         return errorLink(e);
     }
@@ -42,8 +42,8 @@ async function run(coord: LatLng, response: functions.Response<any>) {
     const config = {
         icm48: icm('/um', coord),
         icm84: icm('', coord),
-        blue7: blueMeteo('tydzie%C5%84', coord),
-        blue14: blueMeteo('14-dniowa', coord),
+        blue7: Promise.resolve(`/blue?type=7&lat=${coord.lat}&lng=${coord.lng}`),
+        blue14: Promise.resolve(`/blue?type=14&lat=${coord.lat}&lng=${coord.lng}`),
     };
     const results = Object.fromEntries(
         (await Promise.all(
@@ -54,8 +54,16 @@ async function run(coord: LatLng, response: functions.Response<any>) {
     response.send(JSON.stringify(results));
 }
 
-export const links = functions.https.onRequest((request, response) => {
-        const { lat, lng } = request.query;
+export const blue = functions.https.onRequest((request, response) => {
+    const { lat, lng, type = '7' } = request.query;
+    blueMeteo(type === '7' ? 'tydzie%C5%84' : '14-dniowa', { lat: lat as string, lng: lng as string })
+        .then(link => link
+            ? response.redirect(link)
+            : response.sendStatus(500)
+        );
+});
 
-        run({ lat: lat as string, lng: lng as string }, response);
-    });
+export const links = functions.https.onRequest((request, response) => {
+    const { lat, lng } = request.query;
+    run({ lat: lat as string, lng: lng as string }, response);
+});

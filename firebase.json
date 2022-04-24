@@ -10,6 +10,9 @@
       {
         "source": "/links",
         "function": "links"
+      }, {
+        "source": "/blue",
+        "function": "blue"
       }
     ],
     "ignore": [
