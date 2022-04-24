@@ -11,6 +11,9 @@
   <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
     integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
     crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet-navbar@1.0.0/index.js"
+    integrity="sha256-aIi+g0ZPGepr809ig9zMAplYTpadlOUMOmHu7TsZC2Y=" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-navbar@1.0.0/Leaflet.NavBar.css" />
 
   <title>mobicm</title>
   <style media="screen">
@@ -54,9 +57,9 @@
 <body>
   <div id='map'></div>
   <script>
-    const map = L.map('map').setView([52.2296, 21.0123], 7);
+    const map = L.map('map')
 
-    L.control.scale({imperial:false}).addTo(map);
+    L.control.scale({ imperial: false }).addTo(map);
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -72,9 +75,15 @@
         .setContent(s)
         .openOn(map);
     }
-    map.on('locationfound', e => map.setView(e.latlng, 10));
+    map.on('locationfound', e => {
+      map.setView(e.latlng, 10);
+      L.control.navbar().addTo(map);
+    });
+    map.on('locationerror', e => {
+      map.setView([52.2296, 21.0123], 7);
+      L.control.navbar().addTo(map);
+    })
     map.on('click', async e => {
-      console.log(popup.isOpen());
       if (popup.isOpen()) {
         popup.close();
         return;
@@ -92,7 +101,7 @@
         show(e, err.toString());
       }
     });
-    map.locate({ setView: true, maxZoom: 16 });
+    map.locate({ maxZoom: 16 });
   </script>
 </body>
 
