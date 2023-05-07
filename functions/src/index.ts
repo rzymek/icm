@@ -12,14 +12,14 @@ function errorLink(e: Error) {
 }
 async function icm(prefix: '' | '/um', { lat, lng }: LatLng) {
     try {
-        const url = `http://new.meteo.pl${prefix}/php/mgram_search.php?NALL=${lat}&EALL=${lng}`;
+        const url = `https://meteo.pl${prefix}/php/mgram_search.php?NALL=${lat}&EALL=${lng}`;
         console.log(url);
         const resp = await axios.get(url, { maxRedirects: 0, validateStatus: null });
         const [row, col] = resp.headers.location.match(/(row|col)=([0-9]+)/g)?.map(match => match.split(/=/)[1]) ?? []
         if (row === undefined || col == undefined) {
             throw new Error(`pattern not found in location header: ${resp.headers.location}`);
         }
-        return `http://new.meteo.pl${prefix}/metco/mgram_pict.php?ntype=0u&row=${row}&col=${col}&lang=pl`
+        return `https://meteo.pl${prefix}/metco/mgram_pict.php?ntype=0u&row=${row}&col=${col}&lang=pl`
     } catch (e: any) {
         return errorLink(e);
     }
