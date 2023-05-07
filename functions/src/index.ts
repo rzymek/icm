@@ -10,6 +10,13 @@ function errorLink(e: Error) {
     functions.logger.error(e, { structuredData: true });
     return undefined;
 }
+
+async function icmBeta({lat,lng}:LatLng) {
+    return `https://beta.meteo.pl/meteogramy?lat=${lat}&lng=${lng}`
+}
+async function icmDlugoterminowa({lat,lng}:LatLng) {
+    return `https://beta.meteo.pl/prognoza-dlugoterminowa?lat=${lat}&lng=${lng}`
+}
 async function icm(prefix: '' | '/um', { lat, lng }: LatLng) {
     try {
         const url = `https://meteo.pl${prefix}/php/mgram_search.php?NALL=${lat}&EALL=${lng}`;
@@ -42,6 +49,8 @@ async function run(coord: LatLng, response: functions.Response<any>) {
     const config = {
         icm48: icm('/um', coord),
         icm84: icm('', coord),
+        icmBeta: icmBeta(coord),
+        icm10d: icmDlugoterminowa(coord),
         blue7: Promise.resolve(`/blue?type=7&lat=${coord.lat}&lng=${coord.lng}`),
         blue14: Promise.resolve(`/blue?type=14&lat=${coord.lat}&lng=${coord.lng}`),
     };
