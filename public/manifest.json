@@ -1,0 +1,26 @@
+{
+  "background_color": "#ffffff",
+  "description": "mobicm",
+  "dir": "ltr",
+  "display": "browser",
+  "orientation": "any",
+  "name": "mobicm",
+  "scope": "/",
+  "short_name": "mobicm",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "categories": [
+  ],
+  "screenshots": [],
+  "icons": [
+    {
+      "src": "/icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [],
+  "lang": "pl",
+  "display_override": []
+}

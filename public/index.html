@@ -14,7 +14,13 @@
   <script src="https://unpkg.com/leaflet-navbar@1.0.0/index.js"
     integrity="sha256-aIi+g0ZPGepr809ig9zMAplYTpadlOUMOmHu7TsZC2Y=" crossorigin=""></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet-navbar@1.0.0/Leaflet.NavBar.css" />
-
+  <link rel="icon" type="image/png" href="./icon.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('pwabuilder-sw.js')
+    }
+  </script>
   <title>mobicm</title>
   <style media="screen">
     body {
