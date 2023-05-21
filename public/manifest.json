@@ -2,7 +2,7 @@
   "background_color": "#ffffff",
   "description": "mobicm",
   "dir": "ltr",
-  "display": "browser",
+  "display": "fullscreen",
   "orientation": "any",
   "name": "mobicm",
   "scope": "/",
@@ -11,7 +11,9 @@
   "theme_color": "#ffffff",
   "categories": [
   ],
-  "screenshots": [],
+  "screenshots": [
+    "/screenshot.png"
+  ],
   "icons": [
     {
       "src": "/icon.png",
