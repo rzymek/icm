@@ -19,14 +19,14 @@ async function icmDlugoterminowa({lat,lng}:LatLng) {
 }
 async function icm(prefix: '' | '/um', { lat, lng }: LatLng) {
     try {
-        const url = `https://meteo.pl${prefix}/php/mgram_search.php?NALL=${lat}&EALL=${lng}`;
+        const url = `https://old.meteo.pl${prefix}/php/mgram_search.php?NALL=${lat}&EALL=${lng}`;
         console.log(url);
         const resp = await axios.get(url, { maxRedirects: 0, validateStatus: null });
         const [row, col] = resp.headers.location.match(/(row|col)=([0-9]+)/g)?.map(match => match.split(/=/)[1]) ?? []
         if (row === undefined || col == undefined) {
             throw new Error(`pattern not found in location header: ${resp.headers.location}`);
         }
-        return `https://meteo.pl${prefix}/metco/mgram_pict.php?ntype=0u&row=${row}&col=${col}&lang=pl`
+        return `https://old.meteo.pl${prefix}/metco/mgram_pict.php?ntype=0u&row=${row}&col=${col}&lang=pl`
     } catch (e: any) {
         return errorLink(e);
     }
@@ -34,12 +34,7 @@ async function icm(prefix: '' | '/um', { lat, lng }: LatLng) {
 
 async function blueMeteo(type: 'tydzie%C5%84' | '14-dniowa', c: LatLng) {
     try {
-        const url = `https://www.meteoblue.com/pl/pogoda/${type}/${c.lat}N${c.lng}E`
-        console.log(url);
-        const resp = await axios.get(url);
-        const [link] = resp.data?.match('//my.meteoblue.com/visimage/meteogram_[^"\']*');
-        console.log(link);
-        return `https://${link.replace(/&amp;/g, '&')}`;
+        return `https://www.meteoblue.com/pl/pogoda/${type}/${c.lat}N${c.lng}E`
     } catch (e: any) {
         return errorLink(e);
     }
