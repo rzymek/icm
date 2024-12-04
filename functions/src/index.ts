@@ -14,6 +14,9 @@ function errorLink(e: Error) {
 async function icmBeta({lat,lng}:LatLng) {
     return `https://beta.meteo.pl/meteogramy?lat=${lat}&lng=${lng}`
 }
+async function yr({lat,lng}:LatLng) {
+    return `https://www.yr.no/en/content/${lat}, ${lng}/meteogram.svg`
+}
 async function icmDlugoterminowa({lat,lng}:LatLng) {
     return `https://beta.meteo.pl/prognoza-dlugoterminowa?lat=${lat}&lng=${lng}`
 }
@@ -43,7 +46,7 @@ async function blueMeteo(type: 'tydzie%C5%84' | '14-dniowa', c: LatLng) {
 async function run(coord: LatLng, response: functions.Response<any>) {
     const config = {
         icm48: icm('/um', coord),
-        icm84: icm('', coord),
+        yr: yr(coord),
         icmBeta: icmBeta(coord),
         icm10d: icmDlugoterminowa(coord),
         blue7: Promise.resolve(`/blue?type=7&lat=${coord.lat}&lng=${coord.lng}`),
