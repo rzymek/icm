@@ -16,6 +16,7 @@ jobs:
           cd functions 
           npm i
           npm run build
+          npm i -g firebase-tools
           npm run deploy -- --token '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MOBICM }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
